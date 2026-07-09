@@ -81,6 +81,27 @@ export const updateUser = async (req,res) =>{
     }
 }
 
+const ALLOWED_FIELDS = ["name", "email"];
+
+export const findDuplicateUsersByFields = async (req,res) => {
+    console.log("Calling findDuplicateUsersByFields..");
+    try {
+        const { field, q } = req.query;
+
+        if (!field || !q) {
+            return res.status(400).json({ error: "Both 'field' and 'q' query parameters are required" });
+        }
+        if (!ALLOWED_FIELDS.includes(field)) {
+            return res.status(400).json({ error: `'field' must be one of: ${ALLOWED_FIELDS.join(", ")}` });
+        }
+
+        const users = await User.find({ [field]: q });
+        res.status(200).json({ count: users.length, users });
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+}
+
 export const searchUsers = async (req,res) =>{
     console.log("search user .....");
     try {

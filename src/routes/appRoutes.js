@@ -1,4 +1,4 @@
-import { createUser,showUsers,deleteUser,showUserById,updateUser,searchUsers } from "../controllers/userController.js";
+import { createUser,showUsers,deleteUser,showUserById,updateUser,searchUsers,findDuplicateUsersByFields } from "../controllers/userController.js";
 import seedUsers  from "../databases/insertUsers.js";
 
 const routes = (app) => {        
@@ -12,6 +12,8 @@ const routes = (app) => {
      *         description: List of users
      */
     app.get("/v1/users",showUsers);
+
+    app.get("/v1/users/duplicate",findDuplicateUsersByFields);
 
     app.get("/v1/users/:id",showUserById);
     /**
